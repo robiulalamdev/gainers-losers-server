@@ -2,6 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const uploadRoute = require('./upload.route');
+const gainLossesRoute = require('./gainLosses.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -18,6 +19,10 @@ const defaultRoutes = [
   {
     path: '/upload',
     route: uploadRoute,
+  },
+  {
+    path: '/gain-losses',
+    route: gainLossesRoute,
   },
 ];
 

@@ -39,7 +39,6 @@ const createCountryList = async (payload) => {
 const getAllGainLoses = async () => {
   try {
     const countriesData = await Country.find({});
-
     const modifiedStocks = [];
     const apiKey = 'PX3USK5O28KQACMI';
 
@@ -82,10 +81,10 @@ const getAllGainLoses = async () => {
             const element1 = Object.entries(dailyData)[0];
             const element2 = Object.entries(dailyData)[1];
 
-            const open = parseFloat(element2[1]['1. open']);
-            const close = parseFloat(element1[1]['4. close']);
+            const open = parseFloat(element1[1]['1. open']);
+            const close = parseFloat(element2[1]['4. close']);
 
-            modifiedStock['oneDay'] = parseFloat(open - close);
+            modifiedStock['oneDay'] = parseFloat((open / close) * 100 - 100 + 1);
           }
           // --------weekly--------
           else if (apiUrl.name === 'weekly') {
