@@ -71,6 +71,7 @@ const getAllGainLoses = async () => {
           },
         ];
 
+        let dailyClose = 0;
         for (const apiUrl of apiUrls) {
           const response = await axios.get(apiUrl.api);
 
@@ -83,8 +84,9 @@ const getAllGainLoses = async () => {
 
             const open = parseFloat(element1[1]['1. open']);
             const close = parseFloat(element2[1]['4. close']);
+            dailyClose = parseFloat(element1[1]['4. close']);
 
-            modifiedStock['oneDay'] = parseFloat((open / close) * 100 - 100 + 1);
+            modifiedStock['oneDay'] = parseFloat((open / close) * 100 - 100);
           }
           // --------weekly--------
           else if (apiUrl.name === 'weekly') {
@@ -98,37 +100,37 @@ const getAllGainLoses = async () => {
 
             modifiedStock['oneWeek'] = parseFloat(open - close);
           }
+
           // --------Monthly--------
           else {
             const monthlyData = response.data['Monthly Time Series'];
 
             const firstMonth = Object.entries(monthlyData)[0];
-            const secondMonth = Object.entries(monthlyData)[1];
             const thirdMonth = Object.entries(monthlyData)[2];
             const sixMonth = Object.entries(monthlyData)[5];
             const year = Object.entries(monthlyData)[11];
 
-            const open = parseFloat(secondMonth[1]['1. open']);
+            // const open = parseFloat(secondMonth[1]['1. open']);
             const close = parseFloat(firstMonth[1]['4. close']);
 
-            modifiedStock['oneMonth'] = parseFloat(open - close);
+            modifiedStock['oneMonth'] = parseFloat((dailyClose / close) * 100 - 100);
 
             // --------3 Months--------
             if (thirdMonth) {
-              const thirdMonthOpen = parseFloat(thirdMonth[1]['1. open']);
-              modifiedStock['threeMonth'] = parseFloat(thirdMonthOpen - close);
+              const thirdMonthClose = parseFloat(thirdMonth[1]['4. close']);
+              modifiedStock['threeMonth'] = parseFloat((dailyClose / thirdMonthClose) * 100 - 100);
             }
 
             // --------6 Months--------
             if (sixMonth) {
-              const sixMonthOpen = parseFloat(sixMonth[1]['1. open']);
-              modifiedStock['sixMonth'] = parseFloat(sixMonthOpen - close);
+              const sixMonthClose = parseFloat(sixMonth[1]['4. close']);
+              modifiedStock['sixMonth'] = parseFloat((dailyClose / sixMonthClose) * 100 - 100);
             }
 
             // --------Year--------
             if (year) {
-              const yearOpen = parseFloat(year[1]['1. open']);
-              modifiedStock['oneYear'] = parseFloat(yearOpen - close);
+              const yearClose = parseFloat(year[1]['4. close']);
+              modifiedStock['oneYear'] = parseFloat((dailyClose / yearClose) * 100 - 100);
             }
           }
         }
