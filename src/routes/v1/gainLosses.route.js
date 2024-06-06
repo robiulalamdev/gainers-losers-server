@@ -4,8 +4,6 @@ const { getGainLosses, saveNewGainLosses } = require('../../controllers/gainLoss
 
 const router = express.Router();
 
-// endpoint: /gain-losses
-
 router.post('/save-new', saveNewGainLosses);
 router.get('/', getGainLosses);
 
