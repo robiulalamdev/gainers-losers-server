@@ -1,3 +1,6 @@
+/* eslint-disable no-extra-boolean-cast */
+/* eslint-disable no-continue */
+/* eslint-disable prefer-const */
 /* eslint-disable no-use-before-define */
 /* eslint-disable dot-notation */
 /* eslint-disable no-unused-vars */
